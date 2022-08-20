@@ -8,6 +8,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(ros2_interfaces REQUIRED)
 
 INCLUDE_DIRECTORIES(
   include
@@ -21,9 +22,17 @@ ament_target_dependencies(talker rclcpp std_msgs)
 add_executable(listener src/minimal_subscriber.cpp)
 ament_target_dependencies(listener rclcpp std_msgs)
 
+add_executable(server src/add_two_ints_server.cpp)
+ament_target_dependencies(server rclcpp ros2_interfaces)
+
+add_executable(client src/add_two_ints_client.cpp)
+ament_target_dependencies(client rclcpp ros2_interfaces)
+
 install(TARGETS
   talker
   listener
+  server
+  client
   DESTINATION lib/${PROJECT_NAME}
 )
 
