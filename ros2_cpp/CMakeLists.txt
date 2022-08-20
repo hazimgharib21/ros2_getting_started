@@ -6,6 +6,26 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+
+INCLUDE_DIRECTORIES(
+  include
+)
+
+# build talker
+add_executable(talker src/minimal_publisher.cpp)
+ament_target_dependencies(talker rclcpp std_msgs)
+
+# build listener
+add_executable(listener src/minimal_subscriber.cpp)
+ament_target_dependencies(listener rclcpp std_msgs)
+
+install(TARGETS
+  talker
+  listener
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
