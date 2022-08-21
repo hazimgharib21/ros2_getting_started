@@ -34,6 +34,10 @@ ament_target_dependencies(num_talker rclcpp ros2_interfaces)
 add_executable(num_listener src/num_interface_subscriber.cpp)
 ament_target_dependencies(num_listener rclcpp ros2_interfaces)
 
+add_executable(parameter_node src/parameter_node.cpp)
+ament_target_dependencies(parameter_node rclcpp)
+
+
 install(TARGETS
   talker
   listener
@@ -41,7 +45,13 @@ install(TARGETS
   client
   num_talker
   num_listener
+  parameter_node
   DESTINATION lib/${PROJECT_NAME}
+)
+
+install(
+  DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)
