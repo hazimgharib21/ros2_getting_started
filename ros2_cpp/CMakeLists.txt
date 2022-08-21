@@ -28,11 +28,19 @@ ament_target_dependencies(server rclcpp ros2_interfaces)
 add_executable(client src/add_two_ints_client.cpp)
 ament_target_dependencies(client rclcpp ros2_interfaces)
 
+add_executable(num_talker src/num_interface_publisher.cpp)
+ament_target_dependencies(num_talker rclcpp ros2_interfaces)
+
+add_executable(num_listener src/num_interface_subscriber.cpp)
+ament_target_dependencies(num_listener rclcpp ros2_interfaces)
+
 install(TARGETS
   talker
   listener
   server
   client
+  num_talker
+  num_listener
   DESTINATION lib/${PROJECT_NAME}
 )
 

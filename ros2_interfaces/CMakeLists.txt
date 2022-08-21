@@ -9,11 +9,19 @@ find_package(ament_cmake REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
-rosidl_generate_interfaces(${PROJECT_NAME}
+set(msg_files
   "msg/Num.msg"
   "msg/Sphere.msg"
+)
+
+set(srv_files
   "srv/AddTwoInts.srv"
   "srv/AddThreeInts.srv"
+)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  ${msg_files}
+  ${srv_files}
   DEPENDENCIES geometry_msgs
 )
 
