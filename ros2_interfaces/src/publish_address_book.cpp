@@ -1,41 +1,27 @@
-#include <chrono>
-#include <memory>
+#include "ros2_interfaces/publish_address_book.h"
 
-#include "rclcpp/rclcpp.hpp"
-#include "ros2_interfaces/msg/address_book.hpp"
-
-using namespace std::chrono_literals;
-
-class AddressBookPublisher : public rclcpp::Node
+AddressBookPublisher::AddressBookPublisher() :
+    Node("address_book_publisher")
 {
-public:
-    AddressBookPublisher()
-        : Node("address_book_publisher")
+    address_book_publisher_ =
+        this->create_publisher<ros2_interfaces::msg::AddressBook>("address_book", 10);
+
+    auto publish_msg = [this]() -> void
     {
-        address_book_publisher_ =
-            this->create_publisher<ros2_interfaces::msg::AddressBook>("address_book", 10);
+        auto message = ros2_interfaces::msg::AddressBook();
 
-        auto publish_msg = [this]() -> void
-        {
-            auto message = ros2_interfaces::msg::AddressBook();
+        message.first_name = "John";
+        message.last_name = "Doe";
+        message.age = 30;
+        message.gender = message.MALE;
+        message.address = "unknown";
 
-            message.first_name = "John";
-            message.last_name = "Doe";
-            message.age = 30;
-            message.gender = message.MALE;
-            message.address = "unknown";
+        std::cout << "Publishing Contact\nFirst:" << message.first_name << "  Last:" << message.last_name << std::endl;
 
-            std::cout << "Publishing Contact\nFirst:" << message.first_name << "  Last:" << message.last_name << std::endl;
-
-            this->address_book_publisher_->publish(message);
-        };
-        timer_ = this->create_wall_timer(1s, publish_msg);
-    }
-
-private:
-    rclcpp::Publisher<ros2_interfaces::msg::AddressBook>::SharedPtr address_book_publisher_;
-    rclcpp::TimerBase::SharedPtr timer_;
-};
+        this->address_book_publisher_->publish(message);
+    };
+    timer_ = this->create_wall_timer(1s, publish_msg);
+}
 
 int main(int argc, char *argv[])
 {

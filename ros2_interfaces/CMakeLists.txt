@@ -10,6 +10,10 @@ find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
+INCLUDE_DIRECTORIES(
+  include
+)
+
 set(msg_files
   "msg/Num.msg"
   "msg/Sphere.msg"
@@ -32,8 +36,15 @@ add_executable(publish_address_book
 )
 ament_target_dependencies(publish_address_book "rclcpp")
 
+add_executable(subscribe_address_book
+  src/subscribe_address_book.cpp
+)
+ament_target_dependencies(subscribe_address_book "rclcpp")
+
+
 install(TARGETS
   publish_address_book
+  subscribe_address_book
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -44,6 +55,7 @@ rosidl_get_typesupport_target(
 )
 
 target_link_libraries(publish_address_book "${cpp_typesupport_target}")
+target_link_libraries(subscribe_address_book "${cpp_typesupport_target}")
 
 ament_export_dependencies(rosidl_default_runtime)
 
